@@ -149,15 +149,14 @@ fun InstallDialog(
         ) {
             val scrollState = rememberScrollState()
             Scaffold(
-                containerColor = Color.Transparent,
+                containerColor = if (fullScreen) Color.Transparent
+                    else MaterialTheme.colorScheme.surfaceContainerHigh,
                 modifier = if (fullScreen) modifier.fillMaxSize() else modifier
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .padding(24.dp)
                     .widthIn(max = 560.dp)
                     .heightIn(max = 800.dp)
                     .clip(RoundedCornerShape(28.dp)),
-                containerColor = if (fullScreen) MaterialTheme.colorScheme.background
-                    else MaterialTheme.colorScheme.surfaceContainerHigh,
                 topBar = {
                     TopAppBar(
                         title = { Text(stringResource(CoreR.string.install)) },
