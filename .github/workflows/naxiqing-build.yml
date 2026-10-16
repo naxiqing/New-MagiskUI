@@ -1,0 +1,49 @@
+name: New-MagiskUI Build
+
+# 触发：手动（主力） + push master 改动 app/native/build.py
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - "app/**"
+      - "native/**"
+      - "build.py"
+      - ".github/workflows/naxiqing-build.yml"
+
+jobs:
+  build:
+    name: Build Magisk full (Linux)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out
+        uses: actions/checkout@v6
+        with:
+          submodules: "recursive"
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        with:
+          is-asset-build: true
+
+      - name: Build (debug, full)
+        run: python build.py -v all
+
+      - name: Stop gradle daemon
+        run: ./app/gradlew --stop || true
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p upload
+          ls -la out || true
+          find app -name "*.apk" -type f || true
+          cp -v out/*.apk upload/ 2>/dev/null || true
+          find app -name "*.apk" -type f -exec cp -v {} upload/ \; 2>/dev/null || true
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: New-MagiskUI-${{ github.sha }}
+          path: upload
+          compression-level: 9
+          if-no-files-found: warn
