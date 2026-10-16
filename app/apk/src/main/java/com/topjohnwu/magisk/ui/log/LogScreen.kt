@@ -99,6 +99,7 @@ fun LogScreen(
     }
 
     Scaffold(
+        containerColor = Color.Transparent,
         modifier = modifier,
         topBar = {
             val colorTransitionFraction = scrollBehavior.state.overlappedFraction

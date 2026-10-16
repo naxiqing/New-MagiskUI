@@ -3,8 +3,11 @@ package com.topjohnwu.magisk.ui
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
@@ -209,10 +212,22 @@ fun MagiskTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        shapes = MagiskShapes,
-        typography = MagiskTypography,
-        content = content
-    )
+    Box(
+        modifier = Modifier.fillMaxSize().background(
+            Brush.linearGradient(
+                listOf(
+                    colorScheme.primary.copy(alpha = 0.18f),
+                    colorScheme.surface,
+                    colorScheme.tertiary.copy(alpha = 0.12f)
+                )
+            )
+        )
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            shapes = MagiskShapes,
+            typography = MagiskTypography,
+            content = content
+        )
+    }
 }

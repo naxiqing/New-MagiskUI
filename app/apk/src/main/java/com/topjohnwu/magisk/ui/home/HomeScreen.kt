@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -67,6 +68,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.border
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -248,6 +251,7 @@ fun HomeScreen(
     val scrollState = rememberScrollState()
 
     Scaffold(
+        containerColor = Color.Transparent,
         modifier = modifier,
         topBar = {
             TopAppBar(
@@ -428,9 +432,9 @@ private fun NoticeCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().glassCardBackground(20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.60f))
     ) {
         Row(
             modifier = Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 6.dp),
@@ -511,9 +515,9 @@ private fun CoreCard(
     }
 
     Card(
-        modifier = modifier,
+        modifier = modifier.glassCardBackground(20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.55f)),
     ) {
         Row(
             modifier = Modifier
@@ -584,9 +588,9 @@ private fun AppCard(
     }
 
     Card(
-        modifier = modifier,
+        modifier = modifier.glassCardBackground(20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.55f)),
     ) {
         Column(
             modifier = Modifier
@@ -698,9 +702,9 @@ private fun StatusCard(
     )
 
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().glassCardBackground(20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.55f)),
     ) {
         Row(
             modifier = Modifier
@@ -746,9 +750,9 @@ private fun SupportCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().glassCardBackground(20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.55f)),
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
@@ -830,9 +834,9 @@ private fun DevelopersCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().glassCardBackground(20.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.55f)),
     ) {
         Column {
             developers.forEachIndexed { index, dev ->
@@ -999,3 +1003,30 @@ private fun RestoreAppDialog(
         Text(text = stringResource(CoreR.string.restore_app_confirmation))
     }
 }
+
+
+/**
+ * Liquid-glass style card background.
+ *
+ * Compose cannot sample pixels behind a node, so this is not a *true*
+ * backdrop blur; instead it uses a soft drop shadow + hairline light
+ * border on top of a translucent container colour. Combined with the
+ * gradient app background this reads as frosted glass while keeping
+ * all text perfectly crisp. (Real backdrop-filter blur lands in the
+ * WebUI phase.)
+ */
+private fun Modifier.glassCardBackground(radius: androidx.compose.ui.unit.Dp): Modifier =
+    this
+        .shadow(
+            elevation = androidx.compose.ui.unit.Dp(6f),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(radius),
+            clip = false,
+            ambientColor = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.10f),
+            spotColor = androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.14f)
+        )
+        .border(
+            width = androidx.compose.ui.unit.Dp(1f),
+            color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.18f),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(radius)
+        )
+

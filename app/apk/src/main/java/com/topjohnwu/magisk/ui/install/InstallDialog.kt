@@ -31,6 +31,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -148,6 +149,7 @@ fun InstallDialog(
         ) {
             val scrollState = rememberScrollState()
             Scaffold(
+                containerColor = Color.Transparent,
                 modifier = if (fullScreen) modifier.fillMaxSize() else modifier
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .padding(24.dp)
